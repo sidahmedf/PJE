@@ -22,9 +22,11 @@ import pandas as pd
 import streamlit as st
 
 MAIN_PATH = "/Users/mathislefevre/Documents/PJE_Sid_Ahmed/PJE - Nettoyage/main.py"
+ANNOT_PATH = "/Users/mathislefevre/Documents/PJE_Sid_Ahmed/PJE - Annotation par des mots clés/main.py"
 
-# 🔧 Ajouter le dossier "PJE - Nettoyage" au PYTHONPATH
+# 🔧 Ajouter les dossiers au PYTHONPATH
 sys.path.append("/Users/mathislefevre/Documents/PJE_Sid_Ahmed/PJE - Nettoyage")
+sys.path.append("/Users/mathislefevre/Documents/PJE_Sid_Ahmed/PJE - Annotation par des mots clés")
 
 @st.cache_resource(show_spinner=False)
 def load_cleaning_module():
@@ -32,6 +34,31 @@ def load_cleaning_module():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+import os
+
+
+@st.cache_resource(show_spinner=False)
+def load_annotation_module():
+    annot_dir = "/Users/mathislefevre/Documents/PJE_Sid_Ahmed/PJE - Annotation par des mots clés"
+
+    # Sauvegarder le dossier actuel
+    original_cwd = os.getcwd()
+
+    try:
+        # Se placer dans le dossier d'annotation avant de charger le module
+        os.chdir(annot_dir)
+
+        spec = importlib.util.spec_from_file_location("tweet_annotate_main", ANNOT_PATH)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+
+        return mod
+    finally:
+        # Restaurer le dossier d'origine
+        os.chdir(original_cwd)
+
 
 APP_TITLE = "🧪 Streamlit — Playground de fonctionnalités"
 
@@ -136,24 +163,135 @@ def render_upload():
                     except Exception as e:
                         status.update(label="❌ Échec", state="error")
                         st.error(f"Erreur sur {f.name} : {e}")
+    if st.button("Classifier vos tweets avec Annotation/main(files)"):
+        mod = load_annotation_module()
+        for f in files:
+            if not f.name.lower().endswith((".csv", ".xls", ".xlsx")):
+                st.info(f"⏭️ {f.name} ignoré (pas un CSV/Excel).")
+                continue
+
+            with st.status(f"Annotation en cours : {f.name}", expanded=False) as status:
+                try:
+                    result = mod.main(f)  # Appelle le main() du module d'annotation
+                    st.success(f"✅ {f.name} annoté")
+
+                    # Affiche les résultats (adapte selon ce que retourne ton main)
+                    if isinstance(result, dict) and "annotated_df" in result:
+                        with st.expander(f"👀 Aperçu annoté {f.name}"):
+                            st.dataframe(result["annotated_df"].head(5), use_container_width=True)
+
+                        # Bouton de téléchargement si un CSV annoté est généré
+                        if "full_csv" in result:
+                            with open(result["full_csv"], "rb") as fh:
+                                st.download_button(
+                                    "⬇️ Télécharger le CSV annoté",
+                                    fh.read(),
+                                    file_name=f"annotated_{f.name}",
+                                    mime="text/csv"
+                                )
+                    status.update(label="✅ Terminé", state="complete")
+                except Exception as e:
+                    status.update(label="❌ Échec", state="error")
+                    st.error(f"Erreur sur {f.name} : {e}")
 
 
+# python
 def render_data_charts():
-    st.header("🧮 Données & Graphiques")
-    st.caption("Éditez le tableau, tracez un graphe et exportez en CSV.")
+    import numpy as np
+    import pandas as pd
 
-    # Data synthétique
-    np.random.seed(42)
-    df = pd.DataFrame({
-        "x": np.arange(0, 50),
-        "y": np.cumsum(np.random.randn(50))
-    })
+    st.header("🧮 Données & Graphiques — précision liée au CSV uploadé")
+    st.caption("Chargez un CSV ou utilisez des données synthétiques, puis choisissez les colonnes de vérité/prédiction.")
+
+    uploaded = st.file_uploader("Charger un fichier CSV (optionnel)", type=["csv"], help="Si vous chargez un CSV, il servira de source de données.")
+    df = None
+    if uploaded is not None:
+        try:
+            df = pd.read_csv(uploaded)
+            st.success(f"Fichier chargé : {uploaded.name} — {len(df)} lignes")
+            st.dataframe(df.head(5), use_container_width=True)
+        except Exception as e:
+            st.error(f"Impossible de lire le CSV : {e}")
+
+    if df is None:
+        np.random.seed(42)
+        df = pd.DataFrame({"x": np.arange(0, 50), "y": np.cumsum(np.random.randn(50))})
+        st.info("Aucun CSV chargé — données synthétiques utilisées")
 
     edited = st.data_editor(df, num_rows="dynamic", use_container_width=True)
 
-    st.line_chart(edited, x="x", y="y")
+    cols = list(edited.columns)
+    choose_true = st.selectbox("Colonne étiquette vraie (sélectionnez ou créer synthétique)", ["(Créer synthétique)"] + cols, index=0 if "true_label" not in cols else cols.index("true_label") + 1)
+    choose_prob = st.selectbox("Colonne probabilité prédite (optionnelle)", ["(Aucune)"] + cols, index=0 if "pred_prob" not in cols else cols.index("pred_prob") + 1)
+    choose_pred_label = st.selectbox("Colonne prédiction binaire (optionnelle)", ["(Aucune)"] + cols, index=0 if "pred_label" not in cols else cols.index("pred_label") + 1)
 
-    st.download_button("Exporter le DataFrame (CSV)", edited.to_csv(index=False).encode("utf-8"), file_name="edited_data.csv")
+    # Construire true_label
+    if choose_true == "(Créer synthétique)":
+        true = pd.Series(np.random.choice([0, 1], size=len(edited), p=[0.6, 0.4]), index=edited.index, name="true_label")
+    else:
+        true = edited[choose_true].astype(int, errors="ignore")
+        true = pd.to_numeric(true, errors="coerce").fillna(0).astype(int)
+
+    # Construire prédiction
+    pred = None
+    if choose_prob != "(Aucune)":
+        prob = pd.to_numeric(edited[choose_prob], errors="coerce").clip(0.0, 1.0).fillna(0.0)
+    else:
+        prob = None
+
+    if prob is None and choose_pred_label != "(Aucune)":
+        pred = pd.to_numeric(edited[choose_pred_label], errors="coerce").fillna(0).astype(int)
+    elif prob is None:
+        # pas de colonne fournie -> créer prob synthétique
+        prob = pd.Series(np.clip(0.3 + 0.4 * np.random.randn(len(edited)), 0.0, 1.0), index=edited.index)
+
+    # Si on a une probabilité, proposer un seuil
+    if prob is not None:
+        threshold = st.slider("Seuil de décision (pred_prob → pred_label)", 0.0, 1.0, 0.5, 0.01)
+        pred = (prob >= threshold).astype(int)
+    else:
+        # si pred est toujours None (cas improbable), créer aléatoire
+        if pred is None:
+            pred = pd.Series(np.random.choice([0, 1], size=len(edited)), index=edited.index)
+
+    true = true.astype(int)
+    pred = pred.astype(int)
+
+    TP = int(((true == 1) & (pred == 1)).sum())
+    FP = int(((true == 0) & (pred == 1)).sum())
+    FN = int(((true == 1) & (pred == 0)).sum())
+    TN = int(((true == 0) & (pred == 0)).sum())
+
+    precision = TP / (TP + FP) if (TP + FP) > 0 else float("nan")
+
+    c1, c2 = st.columns([1, 2])
+    with c1:
+        if not np.isnan(precision):
+            st.metric("Précision", f"{precision:.2%}", delta=None)
+        else:
+            st.metric("Précision", "N/A", delta=None)
+        st.write("Matrice de confusion (comptes)")
+        counts = pd.DataFrame({"count": [TP, FP, FN, TN]}, index=["TP", "FP", "FN", "TN"])
+        st.table(counts)
+
+    with c2:
+        st.subheader("Visualisation des comptes")
+        st.bar_chart(counts)
+
+    # Courbe précision vs seuil si prob disponible
+    if prob is not None:
+        thr_vals = np.linspace(0.0, 1.0, 101)
+        prec_vals = []
+        for thr in thr_vals:
+            p = (prob >= thr).astype(int)
+            tp = ((true == 1) & (p == 1)).sum()
+            fp = ((true == 0) & (p == 1)).sum()
+            prec_vals.append(tp / (tp + fp) if (tp + fp) > 0 else np.nan)
+        prec_df = pd.DataFrame({"precision": prec_vals}, index=thr_vals)
+        st.subheader("Précision en fonction du seuil")
+        st.line_chart(prec_df)
+
+    st.download_button("Exporter le DataFrame édité (CSV)", edited.to_csv(index=False).encode("utf-8"), file_name="edited_data.csv")
 
 
 
