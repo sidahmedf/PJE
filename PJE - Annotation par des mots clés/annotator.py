@@ -78,3 +78,15 @@ class KeywordAnnotator:
         df.to_csv(output_path, index=False, encoding="utf-8")
         print(f"✅ Annotation complete → {output_path}")
         return df
+
+
+class KeywordAnnotator:
+    def _annotate_text(self, text):
+        """Annote un seul texte."""
+        text = str(text).lower()
+
+        for label, keywords in self.keywords.items():
+            if any(keyword in text for keyword in keywords):
+                return int(label)  # Retourne 0, 1 ou 2
+
+        return 2  # Neutre par défaut
