@@ -1,16 +1,176 @@
-# This is a sample Python script.
+from algorithm_manager import manager
+import csv, random, json, os
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# ==============================
+# AUTO-CREATE ALL JSON FILES
+# ==============================
+def create_demo_files():
+    os.makedirs("tmp", exist_ok=True)
+
+    synonyms_A = {
+        "0": ["love", "adore", "enjoy"],
+        "1": ["hate", "dislike", "detest"],
+        "2": ["kindle", "ereader", "ebook"]
+    }
+
+    synonyms_B = {
+        "0": ["love", "luv", "loving"],
+        "1": ["hate", "h8", "hatred"],
+        "2": ["amazon", "kindle", "device"]
+    }
+
+    keywords_A = {
+        "positive": ["love", "great", "awesome", "happy", "enjoy"],
+        "negative": ["hate", "bad", "terrible", "angry", "sad"]
+    }
+
+    keywords_B = {
+        "positive": ["kindle", "nice", "good", "fun"],
+        "negative": ["broken", "slow", "trash", "delay"]
+    }
+
+    with open("tmp/syn_A.json", "w") as f: json.dump(synonyms_A, f)
+    with open("tmp/syn_B.json", "w") as f: json.dump(synonyms_B, f)
+    with open("tmp/key_A.json", "w") as f: json.dump(keywords_A, f)
+    with open("tmp/key_B.json", "w") as f: json.dump(keywords_B, f)
+
+    return {
+        "synA": "tmp/syn_A.json",
+        "synB": "tmp/syn_B.json",
+        "keyA": "tmp/key_A.json",
+        "keyB": "tmp/key_B.json"
+    }
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# ==============================
+# LOAD DATA
+# ==============================
+def load_data():
+    data = []
+    with open("test.csv", "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if len(row) >= 2:
+                try:
+                    data.append((int(row[0]), row[1].strip()))
+                except:
+                    pass
+    return data
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# ==============================
+# ACCURACY
+# ==============================
+def compute_accuracy(model, data):
+    correct = 0
+    for label, text in data:
+        pred = model.predict_one(text)
+        if pred == label:
+            correct += 1
+    return round((correct / len(data)) * 100, 2)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+# ==============================
+# MAIN EXPERIMENT SCRIPT
+# ==============================
+def main():
+    files = create_demo_files()
+    data = load_data()
+
+    # pick 1 random tweet
+    true_label, tweet = random.choice(data)
+
+    print("\n🎯 RANDOM TWEET")
+    print("True label:", true_label)
+    print("Tweet:", tweet)
+    print("="*80)
+
+    # Store experiment results
+    results = []
+
+    # ============================================================
+    # 🔵 1. KNN EXPERIMENTS
+    # ============================================================
+    manager.select("KNN")
+    knn = manager.get_current()
+
+    print("\n\n🔵 TESTING KNN\n")
+
+    # --- k values ---
+    for k in [1, 3, 7]:
+        knn.set_params(k=k, distance="jaccard", synonyms_path=files["synA"])
+        knn.fit(data)
+        pred = manager.predict_one(tweet)
+        acc = compute_accuracy(knn, data)
+
+        results.append(["KNN", "k", str(k), pred, acc])
+        print(f"KNN (k={k}) → pred={pred}, accuracy={acc}%")
+
+    # --- Distances ---
+    for dist in ["jaccard", "cosine", "levenshtein", "euclidean", "manhattan"]:
+        knn.set_params(k=3, distance=dist, synonyms_path=files["synA"])
+        knn.fit(data)
+        pred = manager.predict_one(tweet)
+        acc = compute_accuracy(knn, data)
+
+        results.append(["KNN", "distance", dist, pred, acc])
+        print(f"KNN (dist={dist}) → pred={pred}, accuracy={acc}%")
+
+    # --- Synonym files ---
+    for syn in [files["synA"], files["synB"]]:
+        knn.set_params(k=3, distance="jaccard", synonyms_path=syn)
+        knn.fit(data)
+        pred = manager.predict_one(tweet)
+        acc = compute_accuracy(knn, data)
+
+        results.append(["KNN", "synonyms", syn, pred, acc])
+        print(f"KNN (syn={syn}) → pred={pred}, accuracy={acc}%")
+
+
+    # ============================================================
+    # 🟣 2. KEYWORD EXPERIMENTS
+    # ============================================================
+    manager.select("Keyword")
+    kw = manager.get_current()
+
+    print("\n\n🟣 TESTING KEYWORDS\n")
+
+    # --- Keyword files ---
+    for key in [files["keyA"], files["keyB"]]:
+        kw.set_params(keywords_path=key)
+        kw.fit()
+        pred = manager.predict_one(tweet)
+        acc = compute_accuracy(kw, data)
+
+        results.append(["Keyword", "keywords", key, pred, acc])
+        print(f"Keyword ({key}) → pred={pred}, accuracy={acc}%")
+
+    # --- Thresholds ---
+    for thr in [0.0, 0.3, 0.9]:
+        kw.set_params(threshold=thr)
+        kw.fit()
+        pred = manager.predict_one(tweet)
+        acc = compute_accuracy(kw, data)
+
+        results.append(["Keyword", "threshold", str(thr), pred, acc])
+        print(f"Keyword (thr={thr}) → pred={pred}, accuracy={acc}%")
+
+
+    # ============================================================
+    # 📊 FINAL TABLE
+    # ============================================================
+    print("\n\n" + "="*80)
+    print("📊 FINAL RESULTS TABLE")
+    print("="*80)
+
+    print(f"{'Algo':<10} | {'Param':<12} | {'Value':<20} | Pred | Acc")
+    print("-"*80)
+    for row in results:
+        algo, param, value, pred, acc = row
+        print(f"{algo:<10} | {param:<12} | {value:<20} | {pred:<4} | {acc}%")
+
+    print("="*80)
+
+
+if __name__ == "__main__":
+    main()
