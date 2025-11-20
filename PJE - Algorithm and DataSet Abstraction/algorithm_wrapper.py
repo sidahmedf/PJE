@@ -4,6 +4,7 @@ from knn.distance import JaccardDistance
 from knn.voting import MajorityVote
 from keywords.annotator import KeywordAnnotator
 from keywords.evaluate import evaluate_accuracy
+from bayes.bayes import tokenize, train_naive_bayes, classify
 
 
 # ============================================================
@@ -135,4 +136,50 @@ class KeywordWrapper(BaseAlgorithm):
         from keywords.annotation import annotate_tweet
 
         return annotate_tweet(tweet, self.annotator.params)
+
+
+
+class NaiveBayesWrapper(BaseAlgorithm):
+    name = "Naive Bayes"
+    mode = "supervised"
+    output_type = "label"
+    description = "Naive Bayes classifier"
+
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        # parameter schema — consistent with other wrappers
+        self.param_schema = {
+            "smoothing": {
+                "type": "float",
+                "default": 1.0,
+                "min": 0.1,
+                "max": 5.0,
+                "step": 0.1,
+            }
+        }
+
+        # initialize params using schema + kwargs (consistent with KNN/Keyword)
+        self.params = {k: v["default"] for k, v in self.param_schema.items()}
+        self.params.update(kwargs)
+
+        # trained model parts
+        self.prior = None
+        self.cond_prob = None
+        self.vocab = None
+
+    def fit(self, data):
+        """
+        Base format is [(label, text)]
+        But function used in bayes.py expects [(text, label)].
+        So we convert format but do not modify his implementation.
+        """
+        converted = [(text, label) for label, text in data]
+        self.prior, self.cond_prob, self.vocab = train_naive_bayes(converted)
+
+
+    def predict_one(self, text):
+        if self.prior is None:
+            raise ValueError("Naive Bayes must be trained before predicting.")
+        return classify(text, self.prior, self.cond_prob, self.vocab)
 

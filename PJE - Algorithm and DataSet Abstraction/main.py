@@ -1,6 +1,7 @@
 from algorithm_manager import manager
 import csv, random, json, os
 
+
 # ==============================
 # AUTO-CREATE ALL JSON FILES
 # ==============================
@@ -59,13 +60,12 @@ def load_data():
 
 
 # ==============================
-# ACCURACY
+# SIMPLE ACCURACY
 # ==============================
 def compute_accuracy(model, data):
     correct = 0
     for label, text in data:
-        pred = model.predict_one(text)
-        if pred == label:
+        if model.predict_one(text) == label:
             correct += 1
     return round((correct / len(data)) * 100, 2)
 
@@ -85,7 +85,6 @@ def main():
     print("Tweet:", tweet)
     print("="*80)
 
-    # Store experiment results
     results = []
 
     # ============================================================
@@ -98,29 +97,31 @@ def main():
 
     # --- k values ---
     for k in [1, 3, 7]:
-        knn.set_params(k=k, distance="jaccard", synonyms_path=files["synA"])
+        knn.set_params(k=k, synonyms_path=files["synA"])
         knn.fit(data)
-        pred = manager.predict_one(tweet)
+        pred = knn.predict_one(tweet)
         acc = compute_accuracy(knn, data)
 
         results.append(["KNN", "k", str(k), pred, acc])
-        print(f"KNN (k={k}) → pred={pred}, accuracy={acc}%")
+        print(f"KNN (k={k}) → pred={pred}, acc={acc}%")
 
-    # --- Distances ---
-    for dist in ["jaccard", "cosine", "levenshtein", "euclidean", "manhattan"]:
+
+    # --- Distances (wrapper only supports 'jaccard', others ignored)
+    for dist in ["jaccard"]:
         knn.set_params(k=3, distance=dist, synonyms_path=files["synA"])
         knn.fit(data)
-        pred = manager.predict_one(tweet)
+        pred = knn.predict_one(tweet)
         acc = compute_accuracy(knn, data)
 
         results.append(["KNN", "distance", dist, pred, acc])
-        print(f"KNN (dist={dist}) → pred={pred}, accuracy={acc}%")
+        print(f"KNN (dist={dist}) → pred={pred}, acc={acc}%")
 
-    # --- Synonym files ---
+
+    # --- Synonyms file ---
     for syn in [files["synA"], files["synB"]]:
         knn.set_params(k=3, distance="jaccard", synonyms_path=syn)
         knn.fit(data)
-        pred = manager.predict_one(tweet)
+        pred = knn.predict_one(tweet)
         acc = compute_accuracy(knn, data)
 
         results.append(["KNN", "synonyms", syn, pred, acc])
@@ -139,21 +140,41 @@ def main():
     for key in [files["keyA"], files["keyB"]]:
         kw.set_params(keywords_path=key)
         kw.fit()
-        pred = manager.predict_one(tweet)
+        pred = kw.predict_one(tweet)
         acc = compute_accuracy(kw, data)
 
         results.append(["Keyword", "keywords", key, pred, acc])
-        print(f"Keyword ({key}) → pred={pred}, accuracy={acc}%")
+        print(f"Keyword ({key}) → pred={pred}, acc={acc}%")
 
-    # --- Thresholds ---
+
+    # --- Threshold ---
     for thr in [0.0, 0.3, 0.9]:
         kw.set_params(threshold=thr)
         kw.fit()
-        pred = manager.predict_one(tweet)
+        pred = kw.predict_one(tweet)
         acc = compute_accuracy(kw, data)
 
         results.append(["Keyword", "threshold", str(thr), pred, acc])
-        print(f"Keyword (thr={thr}) → pred={pred}, accuracy={acc}%")
+        print(f"Keyword (thr={thr}) → pred={pred}, acc={acc}%")
+
+
+    # ============================================================
+    # 🟡 3. NAIVE BAYES EXPERIMENTS
+    # ============================================================
+    manager.select("Naive Bayes")
+    nb = manager.get_current()
+
+    print("\n\n🟡 TESTING NAIVE BAYES\n")
+
+    # Try different smoothing values (even if teammate does not use them)
+    for s in [0.5, 1.0, 2.0]:
+        nb.set_params(smoothing=s)
+        nb.fit(data)
+        pred = nb.predict_one(tweet)
+        acc = compute_accuracy(nb, data)
+
+        results.append(["Naive Bayes", "smoothing", str(s), pred, acc])
+        print(f"NaiveBayes (smooth={s}) → pred={pred}, acc={acc}%")
 
 
     # ============================================================
@@ -163,11 +184,10 @@ def main():
     print("📊 FINAL RESULTS TABLE")
     print("="*80)
 
-    print(f"{'Algo':<10} | {'Param':<12} | {'Value':<20} | Pred | Acc")
+    print(f"{'Algo':<12} | {'Param':<12} | {'Value':<20} | Pred | Acc")
     print("-"*80)
-    for row in results:
-        algo, param, value, pred, acc = row
-        print(f"{algo:<10} | {param:<12} | {value:<20} | {pred:<4} | {acc}%")
+    for algo, param, value, pred, acc in results:
+        print(f"{algo:<12} | {param:<12} | {value:<20} | {pred:<4} | {acc}%")
 
     print("="*80)
 

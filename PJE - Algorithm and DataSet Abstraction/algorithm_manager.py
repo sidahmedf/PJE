@@ -1,5 +1,5 @@
 # algorithm_manager.py
-from algorithm_wrapper import KNNWrapper, KeywordWrapper
+from algorithm_wrapper import KNNWrapper, KeywordWrapper, NaiveBayesWrapper
 
 
 class AlgorithmManager:
@@ -44,4 +44,6 @@ class AlgorithmManager:
 manager = AlgorithmManager([
     ("KNN", KNNWrapper()),
     ("Keyword", KeywordWrapper()),
+    ("Naive Bayes", NaiveBayesWrapper())
+
 ])
