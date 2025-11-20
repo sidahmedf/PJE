@@ -3,7 +3,7 @@
 # ===============================================================
 
 from file_validation.file_validation import FileValidation
-from column_detection.label_column_detector  import FinalLabelDetector
+from column_detection.label_column_detector  import FinalLabelDetector, LengthBasedDetector
 from column_detection.tweet_column_detector  import FinalTweetDetector, HybridDetector
 from tweet_cleaning.tweet_cleaner import TweetCleaner
 from export.shipment import ShipmentManager
@@ -12,7 +12,7 @@ from export.shipment import ShipmentManager
 #  1️⃣ Load & Validate Input File
 # ===============================================================
 
-csv_path = "training.1600000.processed.noemoticon.csv"
+csv_path = "testdata.manual.2009.06.14.csv"
 
 
 print("🔍 Step 1: Validating input file...\n")
@@ -41,7 +41,7 @@ except Exception as e:
 print("\n🧠 Step 2: Detecting key columns...")
 
 label_detector = FinalLabelDetector()
-tweet_detector = FinalTweetDetector(fallback_detector=HybridDetector())
+tweet_detector = LengthBasedDetector()
 
 label_idx = label_detector.detect(df)
 tweet_idx = tweet_detector.detect(df)
@@ -49,10 +49,22 @@ tweet_idx = tweet_detector.detect(df)
 if label_idx is None or tweet_idx is None:
     print("❌ Could not detect label/tweet columns automatically.")
     exit()
-
 print(f"✅ Detected label column: index {label_idx} ({df.columns[label_idx]})")
 print(f"✅ Detected tweet column: index {tweet_idx} ({df.columns[tweet_idx]})")
+"""
 
+# ===============================================================
+#  3️⃣ SELECT COLUMNS MANUALLY
+# ===============================================================
+
+print("\n🧠 Step 2: Selecting columns manually...")
+
+label_idx = 0         # Pas de colonne label
+tweet_idx = 5            # La première colonne est le tweet
+
+print(f"👉 Using tweet column index = {tweet_idx}")
+print("👉 No label column (classification à faire ensuite).")
+"""
 # ===============================================================
 #  4️⃣ Clean Tweets
 # ===============================================================

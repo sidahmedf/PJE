@@ -155,8 +155,8 @@ if __name__ == "__main__":
 
     # 3) DÉTERMINER quelle colonne contient le texte
     # Ajoutez ce debug pour vérifier :
-    print(f"\n📄 En-tête du fichier : {header}")
-    print(f"📝 Première ligne : {rows[0]}")
+    print(f"\n En-tête du fichier : {header}")
+    print(f" Première ligne : {rows[0]}")
 
     # Si le texte est en colonne 1 (index 1) :
     tweets_a_tester = [row[1] for row in rows]
@@ -168,4 +168,4 @@ if __name__ == "__main__":
     ]
 
     # 5) Sauvegarde
-    save_predictions("result/tweets_annotes.csv", rows, header, predictions)
+    save_predictions("result/tweets_annotes_Bayes.csv", rows, header, predictions)
