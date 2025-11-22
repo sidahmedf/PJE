@@ -91,10 +91,8 @@ def classify(tweet, prior, cond_prob, vocab):
         classify.count = 0
 
     if classify.count < 3:
-        print(f"\n🔍 Tweet #{classify.count + 1}: '{tweet[:40]}...'")
-        print(f"   Mots reconnus: {[w for w in words if w in vocab][:10]}")
         for c in sorted(scores.keys()):
-            print(f"   Score {CLASS_LABELS[c]} ({c}): {scores[c]:.2f}")
+            pass
         classify.count += 1
 
     return max(scores, key=scores.get)
@@ -146,17 +144,14 @@ if __name__ == "__main__":
     # DEBUG : Afficher les 5 premiers exemples
     print("📊 Premiers exemples d'entraînement :")
     for i, (tweet, label) in enumerate(training_data[:5]):
-        print(f"  {i + 1}. Label={label} → Tweet={tweet[:50]}...")
 
-    prior, cond_prob, vocab = train_naive_bayes(training_data)
+        prior, cond_prob, vocab = train_naive_bayes(training_data)
 
     # 2) Chargement du fichier complet
     rows, header = load_test_csv("final_cleaned_min.csv")
 
     # 3) DÉTERMINER quelle colonne contient le texte
     # Ajoutez ce debug pour vérifier :
-    print(f"\n📄 En-tête du fichier : {header}")
-    print(f"📝 Première ligne : {rows[0]}")
 
     # Si le texte est en colonne 1 (index 1) :
     tweets_a_tester = [row[1] for row in rows]

@@ -5,7 +5,7 @@ from knn.voting import MajorityVote
 from keywords.annotator import KeywordAnnotator
 from keywords.evaluate import evaluate_accuracy
 from bayes.bayes import tokenize, train_naive_bayes, classify
-
+import random
 
 # ============================================================
 # 🧱 Base Class
@@ -41,24 +41,6 @@ class BaseAlgorithm:
     def predict_batch(self, texts):
         return [self.predict_one(t) for t in texts]
 
-    def evaluate(self, dataset):
-        """Generic evaluator for supervised algorithms using (label, text) pairs."""
-        if not dataset:
-            return {"error": "Empty dataset"}
-
-        correct = 0
-        total = 0
-        for true_label, tweet in dataset:
-            try:
-                pred = self.predict_one(tweet)
-                if pred == true_label:
-                    correct += 1
-                total += 1
-            except Exception as e:
-                print(f"⚠️ Prediction error on tweet: {tweet[:30]}... ({e})")
-
-        accuracy = correct / total * 100 if total > 0 else 0
-        return {"accuracy": round(accuracy, 2), "correct": correct, "total": total}
 
     def describe(self):
         return {
@@ -183,3 +165,27 @@ class NaiveBayesWrapper(BaseAlgorithm):
             raise ValueError("Naive Bayes must be trained before predicting.")
         return classify(text, self.prior, self.cond_prob, self.vocab)
 
+
+class DummyWrapper(BaseAlgorithm):
+    name = "Dummy"
+    mode = "supervised"
+    output_type = "label"
+    description = "Dummy algorithm returning random predictions"
+
+    def __init__(self, possible_labels=None, **kwargs):
+        super().__init__()
+        # optional param: list of labels to randomly choose from
+        self.param_schema = {
+            "possible_labels": {"type": "list", "default": [0, 2, 4]}
+        }
+        self.params = {k: v["default"] for k, v in self.param_schema.items()}
+        self.params.update(kwargs)
+        self.possible_labels = self.params["possible_labels"]
+
+    def fit(self, data):
+        """Dummy fit does nothing"""
+        pass
+
+    def predict_one(self, text):
+        """Return a random label"""
+        return random.choice(self.possible_labels)
