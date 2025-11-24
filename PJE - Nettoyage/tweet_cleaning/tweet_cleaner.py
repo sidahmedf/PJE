@@ -2,7 +2,7 @@
 import re
 import pandas as pd
 from langdetect import detect, DetectorFactory
-from tweet_cleaning.rules import default_rules
+from .rules import default_rules
 
 DetectorFactory.seed = 0  # ensure reproducibility
 

@@ -35,7 +35,8 @@ Ce dépôt fournit un pipeline **modulaire** pour :
 
 ### `rules.py`
 - Contient toutes les **règles de nettoyage textuel** :  
-  ```python
+  ```
+  python
   ToLowercase()
   RemoveURLs()
   RemoveMentions()
@@ -55,7 +56,8 @@ Ce dépôt fournit un pipeline **modulaire** pour :
 
 ### `shipment.py`
 - Gère la **sortie** des données nettoyées :
-  ```python
+  ```
+  python
   ShipmentManager(mode="csv").ship(df)
   ShipmentManager(mode="json").ship(df)
   ShipmentManager(mode="dataframe").ship(df)
