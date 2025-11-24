@@ -79,8 +79,8 @@ def annotate_tweet(tweet: str, params: "AnnotationParams") -> int:
 
     # Compute final polarity
     if pos_count > neg_count:
-        return 2
+        return 4
     elif neg_count > pos_count:
-        return 2
+        return 0
     else:
         return 2
