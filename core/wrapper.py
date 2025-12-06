@@ -1,10 +1,9 @@
 # algorithms.py
-from knn.knn_classifier import KNNClassifier
-from knn.distance import JaccardDistance
-from knn.voting import MajorityVote
-from keywords.annotator import KeywordAnnotator
-from keywords.evaluate import evaluate_accuracy
-from bayes.bayes import tokenize, train_naive_bayes, classify
+from algorithms.knn.knn_classifier import KNNClassifier
+from algorithms.knn.distance import JaccardDistance
+from algorithms.knn.voting import MajorityVote
+from algorithms.keywords.annotator import KeywordAnnotator
+from algorithms.bayes.bayes import train_naive_bayes, classify
 import random
 
 # ============================================================
@@ -115,7 +114,7 @@ class KeywordWrapper(BaseAlgorithm):
         Predict a single tweet by reusing the annotator's real logic
         (annotate_tweet + params), without modifying KeywordAnnotator.
         """
-        from keywords.annotation import annotate_tweet
+        from algorithms.keywords.annotation import annotate_tweet
 
         return annotate_tweet(tweet, self.annotator.params)
 
@@ -189,3 +188,24 @@ class DummyWrapper(BaseAlgorithm):
     def predict_one(self, text):
         """Return a random label"""
         return random.choice(self.possible_labels)
+
+class DummyAlgo2(BaseAlgorithm):
+    name = "Dummy Always 4"
+    mode = "supervised" # Treated as a supervised baseline
+    output_type = "label"
+    description = "Deterministic algorithm that always predicts label 4"
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        # No parameters are required since the output is hardcoded
+        self.param_schema = {}
+        self.params = {}
+        self.params.update(kwargs)
+
+    def fit(self, data):
+        """No training required for a static prediction."""
+        pass
+
+    def predict_one(self, text):
+        """Always return 4, regardless of input text."""
+        return 4

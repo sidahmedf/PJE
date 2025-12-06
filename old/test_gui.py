@@ -1,13 +1,13 @@
 # streamlit_app.py
 
 import streamlit as st
-from algorithm_manager import manager
+from core.algorithm_manager import manager
 import csv
 
 # ==============================
 # Load Dataset (minimal, just for fitting/testing)
 # ==============================
-TEST_CSV_FILE = "test.csv"
+TEST_CSV_FILE = "../test.csv"
 
 @st.cache_data
 def load_dataset():

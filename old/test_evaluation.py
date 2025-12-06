@@ -1,14 +1,14 @@
 # full_dataset_evaluation.py
 
 import csv
-from algorithm_manager import manager
-from evaluation import EvaluationService
+from core.algorithm_manager import manager
+from core.evaluation import EvaluationService
 from tabulate import tabulate
 
 # ==============================
 # Configuration
 # ==============================
-TEST_CSV_FILE = "test.csv"
+TEST_CSV_FILE = "../test.csv"
 
 # ==============================
 # Load Full Dataset

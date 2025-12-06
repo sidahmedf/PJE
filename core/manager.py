@@ -1,5 +1,5 @@
 # algorithm_manager.py
-from algorithm_wrapper import KNNWrapper, KeywordWrapper, NaiveBayesWrapper, DummyWrapper
+from wrapper import KNNWrapper, KeywordWrapper, NaiveBayesWrapper, DummyWrapper, DummyAlgo2
 
 
 class AlgorithmManager:
@@ -41,9 +41,11 @@ class AlgorithmManager:
 # ============================================================
 # 🔧 Export a prebuilt manager instance
 # ============================================================
+
 manager = AlgorithmManager([
     ("KNN", KNNWrapper()),
     ("Keyword", KeywordWrapper()),
-    ("Naive Bayes", NaiveBayesWrapper())
-    #("Dummy", DummyWrapper())  # Added dummy algorithm
+    ("Naive Bayes", NaiveBayesWrapper()),
+    ("Dummy", DummyWrapper()),
+    ("Dummy Always 4", DummyAlgo2())  # Added name string and instantiated the class
 ])

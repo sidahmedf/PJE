@@ -182,3 +182,4 @@ cython_debug/
 
 .PJE - Naive Bayes/final_cleaned_min.csv
 result/
+.venv/

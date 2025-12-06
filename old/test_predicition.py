@@ -2,10 +2,10 @@
 
 import csv
 import random
-from algorithm_manager import manager
+from core.algorithm_manager import manager
 
 # --- Configuration ---
-TEST_CSV_FILE = "test.csv"
+TEST_CSV_FILE = "../test.csv"
 SAMPLE_SIZE = 10
 RANDOM_SEED = 42
 
