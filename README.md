@@ -131,7 +131,7 @@ Dans ce fichier :
 
 | Module                | Statut      | Assigné à |
 |-----------------------|-------------|-----------|
-| 1. Data & Cleaning    | 🚧 En Cours |           |
+| 1. Data & Cleaning    | ✅ Fait  |           |
 | 2. Annotation Studio  | 🚧 En Cours |           |
 | 3. Keywords Algo      | 🚧 En Cours  |           |
 | 4. KNN Algo           | 🚧 En Cours  |           |

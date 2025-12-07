@@ -5,137 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1daa34cf-9795-46aa-9046-2fd1d2647ddd" name="Changes" comment="Ajout du dossier pour Naive Bayes, algo fonctionnel.">
-      <change afterPath="$PROJECT_DIR$/IHM.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cleaning/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cleaning/tweet_cleaning/tweet_cleaner.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/layout.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/annotation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/bayes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/clustering.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/comparison.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/data_cleaning.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/keywords.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gui/tabs/knn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/PJE - Interface Streamlit/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/column_detection/label_column_detector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/column_detection/tweet_column_detector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/export/shipment.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/file_validation/file_validation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/tweet_cleaning/rules.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old/interface.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PJE_Sid_Ahmed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PJE_Sid_Ahmed.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/PJE - Algorithm and DataSet Abstraction.iml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/PJE - Algorithm and DataSet Abstraction.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/csv-editor.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Algorithm and DataSet Abstraction/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/algorithm_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/algorithm_wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/wrapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/bayes/bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/bayes/bayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/data/keywords.json" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/keywords/keywords.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/data/synonyms.json" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/knn/synonyms.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/keywords/annotation.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/keywords/annotation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/keywords/annotator.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/keywords/annotator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/keywords/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/keywords/evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/keywords/keywords.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/resources/keywords.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/keywords/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/keywords/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/keywords/words.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/keywords/words.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/knn/distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/knn/distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/knn/knn_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/knn/knn_classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/knn/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/knn/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/knn/synonym_mapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/knn/synonym_mapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/knn/synonyms.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/resources/synonyms.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/knn/voting.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/knn/voting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/temp_keywords.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/temp_synonyms.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/test.csv" beforeDir="false" afterPath="$PROJECT_DIR$/test.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/test/test_algorithm_manager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/test_evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/test_evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/test_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/test_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/test_predicition.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/test_predicition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/keyA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/keyB.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/key_A.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/key_B.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/synA.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/synB.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/syn_A.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Algorithm and DataSet Abstraction/tmp/syn_B.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/PJE - Annotation par des mots clés.iml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/PJE - Annotation par des mots clés.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/annotated_add.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/annotated_add.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/annotation.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/annotation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/annotator.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/annotator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/keywords.json" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/keywords.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/negative.txt" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/negative.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/positive.txt" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/positive.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/test.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/test.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Annotation par des mots clés/words.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Annotation par des mots clés/words.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Evaluation/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Evaluation/todo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - IHM/todo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - IHM/todo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/PJE - KNN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/PJE - KNN.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/README.MD" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/README.MD" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/distance.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/distance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/knn_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/knn_classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/synonym_mapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/synonym_mapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/synonyms.json" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/synonyms.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - KNN/voting.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - KNN/voting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Naive Bayes/explain.txt" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Naive Bayes/explain.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Naive Bayes/final_cleaned_min.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Naive Bayes/final_cleaned_min.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Naive Bayes/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Naive Bayes/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/PJE - Nettoyage.iml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/PJE - Nettoyage.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/copilot.data.migration.agent.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/copilot.data.migration.agent.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/copilot.data.migration.ask.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/copilot.data.migration.ask.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/copilot.data.migration.ask2agent.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/copilot.data.migration.edit.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/copilot.data.migration.edit.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/csv-editor.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/column_detection/label_column_detector.py" beforeDir="false" afterPath="$PROJECT_DIR$/cleaning/column_detection/label_column_detector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/column_detection/tweet_column_detector.py" beforeDir="false" afterPath="$PROJECT_DIR$/cleaning/column_detection/tweet_column_detector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/export/shipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/cleaning/export/shipment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/file_validation/file_validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/cleaning/file_validation/file_validation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/output/final_cleaned_full.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/output/final_cleaned_full.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/output/final_cleaned_min.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/output/final_cleaned_min.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/testdata.manual.2009.06.14.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/testdata.manual.2009.06.14.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/tweet_a_tester.csv" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/tweet_a_tester.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/tweet_cleaning/rules.py" beforeDir="false" afterPath="$PROJECT_DIR$/cleaning/tweet_cleaning/rules.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PJE - Nettoyage/tweet_cleaning/tweet_cleaner.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/PJE - Nettoyage/tweet_cleaning/tweet_cleaner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/tabs/data_cleaning.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/data_cleaning.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,21 +40,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.interface.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "app__beta",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Documents/PJE/PJE",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.interface.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;app__beta&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Documents/PJE/PJE&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/PJE - Naive Bayes" />
