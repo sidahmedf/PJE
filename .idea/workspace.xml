@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1daa34cf-9795-46aa-9046-2fd1d2647ddd" name="Changes" comment="Ajout du dossier pour Naive Bayes, algo fonctionnel.">
-      <change afterPath="$PROJECT_DIR$/config.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/tabs/data_cleaning.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/data_cleaning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/tabs/keywords.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/keywords.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,16 +95,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajout du dossier pour Naive Bayes, algo fonctionnel." />
     <option name="LAST_COMMIT_MESSAGE" value="Ajout du dossier pour Naive Bayes, algo fonctionnel." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PJE_Sid_Ahmed$main.coverage" NAME="main Coverage Results" MODIFIED="1763393347311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PJE - Naive Bayes" />

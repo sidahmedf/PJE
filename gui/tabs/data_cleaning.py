@@ -240,9 +240,21 @@ def render(manager):
                 col_res1.metric("Training Set", f"{len(train_df)} rows")
                 col_res2.metric("Test Set", f"{len(test_df)} rows")
 
-                with st.expander("View Split Data"):
-                    st.write("Training Sample:", train_df.head())
-                    st.write("Test Sample:", test_df.head())
+                with st.expander("View Split Data", expanded=True):
+                    # --- DISPLAY LOGIC START ---
+                    st.markdown("**Training Sample (First 5 rows)**")
+                    # 1. Create a copy so we don't touch the real data
+                    train_display = train_df.head().copy()
+                    # 2. Overwrite columns with simple indices (0, 1, 2...)
+                    train_display.columns = range(len(train_display.columns))
+                    # 3. Show the display copy
+                    st.dataframe(train_display, use_container_width=True)
+
+                    st.markdown("**Test Sample (First 5 rows)**")
+                    test_display = test_df.head().copy()
+                    test_display.columns = range(len(test_display.columns))
+                    st.dataframe(test_display, use_container_width=True)
+                    # --- DISPLAY LOGIC END ---
 
             except ValueError as e:
                 st.error(
