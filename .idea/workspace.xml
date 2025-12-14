@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1daa34cf-9795-46aa-9046-2fd1d2647ddd" name="Changes" comment="Added the clustering algorithm">
+    <list default="true" id="1daa34cf-9795-46aa-9046-2fd1d2647ddd" name="Changes" comment="feat: finalisation des algorithmes et correctifs GUI (Bayes stable)&#10;&#10;- Correction logique Naive Bayes : retourne 'Neutre' (2) si aucun mot connu.&#10;- Uniformisation de l'interface Bayes (alignée sur KNN/Clustering).&#10;- Correction du crash StreamlitDuplicateElementId (ajout de clés uniques aux boutons).&#10;- Validation globale : tous les modèles sont fonctionnels.&#10;&#10;TODO: Implémenter l'analyse expérimentale (Onglet 7) et finaliser les exports CSV.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/algorithms/bayes/bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/bayes/bayes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/wrapper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/tabs/bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/bayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/tabs/clustering.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/clustering.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/tabs/knn.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/knn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,27 +53,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.bayes.executor": "Run",
-    "Python.interface.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "app__beta",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Lenovo/Documents/PJE/PJE",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.bayes.executor&quot;: &quot;Run&quot;,
+    &quot;Python.interface.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;app__beta&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lenovo/Documents/PJE/PJE&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/PJE - Naive Bayes" />
@@ -105,7 +102,8 @@
       <updated>1762182262111</updated>
       <workItem from="1765717183063" duration="599000" />
       <workItem from="1765717892743" duration="2063000" />
-      <workItem from="1765734728463" duration="4495000" />
+      <workItem from="1765734728463" duration="4520000" />
+      <workItem from="1765741240903" duration="356000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout du dossier pour Naive Bayes, algo fonctionnel.">
       <option name="closed" value="true" />
@@ -123,7 +121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765719331876</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: finalisation des algorithmes et correctifs GUI (Bayes stable)&#10;&#10;- Correction logique Naive Bayes : retourne 'Neutre' (2) si aucun mot connu.&#10;- Uniformisation de l'interface Bayes (alignée sur KNN/Clustering).&#10;- Correction du crash StreamlitDuplicateElementId (ajout de clés uniques aux boutons).&#10;- Validation globale : tous les modèles sont fonctionnels.&#10;&#10;TODO: Implémenter l'analyse expérimentale (Onglet 7) et finaliser les exports CSV.">
+      <option name="closed" value="true" />
+      <created>1765739263706</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1765739263706</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,7 +138,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajout du dossier pour Naive Bayes, algo fonctionnel." />
     <MESSAGE value="Added the clustering algorithm" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added the clustering algorithm" />
+    <MESSAGE value="feat: finalisation des algorithmes et correctifs GUI (Bayes stable)&#10;&#10;- Correction logique Naive Bayes : retourne 'Neutre' (2) si aucun mot connu.&#10;- Uniformisation de l'interface Bayes (alignée sur KNN/Clustering).&#10;- Correction du crash StreamlitDuplicateElementId (ajout de clés uniques aux boutons).&#10;- Validation globale : tous les modèles sont fonctionnels.&#10;&#10;TODO: Implémenter l'analyse expérimentale (Onglet 7) et finaliser les exports CSV." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: finalisation des algorithmes et correctifs GUI (Bayes stable)&#10;&#10;- Correction logique Naive Bayes : retourne 'Neutre' (2) si aucun mot connu.&#10;- Uniformisation de l'interface Bayes (alignée sur KNN/Clustering).&#10;- Correction du crash StreamlitDuplicateElementId (ajout de clés uniques aux boutons).&#10;- Validation globale : tous les modèles sont fonctionnels.&#10;&#10;TODO: Implémenter l'analyse expérimentale (Onglet 7) et finaliser les exports CSV." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PJE$bayes.coverage" NAME="bayes Coverage Results" MODIFIED="1765737396362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/algorithms/bayes" />

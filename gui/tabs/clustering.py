@@ -20,19 +20,26 @@ def render(manager):
     col_text_idx = st.session_state.get('cleaned_text_col_idx', 1)
     col_label_idx = st.session_state.get('cleaned_label_col_idx', 0)
 
-    # Slider pour limiter la taille (car matrice N*N est lourde)
-    n_samples = st.slider("Taille de l'échantillon (Tweets)", 50, 300, 100, help="Réduisez si c'est trop lent.")
+    # Slider pour limiter la taille
+    n_samples = st.slider("Taille de l'échantillon (Tweets)", 50, 500, 100, help="Réduisez si c'est trop lent.")
     df_sample = df.iloc[:n_samples].copy()
 
     # Préparation des données
     data_train = []
     labels_reels = []
+    textes_seuls = []  # Pour l'export
+
     for i in range(len(df_sample)):
         txt = str(df_sample.iloc[i, col_text_idx])
         # Gestion safe du label (si non supervisé, on met 0)
-        lbl = int(df_sample.iloc[i, col_label_idx]) if col_label_idx is not None else 0
+        try:
+            lbl = int(df_sample.iloc[i, col_label_idx]) if col_label_idx is not None else 0
+        except:
+            lbl = 0
+
         data_train.append((lbl, txt))
         labels_reels.append(lbl)
+        textes_seuls.append(txt)
 
     st.info(f"Analyse sur **{len(data_train)}** tweets.")
 
@@ -48,7 +55,7 @@ def render(manager):
         else:
             st.caption("✅ **Standard**: Utilise Distance 'Mots Communs' (Jaccard).")
 
-    # --- Initialisation de l'algo (HORS du bouton pour persistance) ---
+    # --- Initialisation de l'algo ---
     manager.select("Clustering")
     algo = manager.get_current()
 
@@ -58,12 +65,20 @@ def render(manager):
             algo.set_params(n_clusters=k_clusters, linkage=method)
             algo.fit(data_train)
 
-            # Sauvegarde dans la session
+            # Sauvegarde des résultats bruts
             st.session_state['clustering_trained'] = True
             st.session_state['clustering_linkage'] = algo.get_linkage_matrix()
             st.session_state['clustering_labels'] = algo.get_labels()
 
-        st.success("Terminé !")
+            # --- CRÉATION DU CSV D'EXPORT (Immédiatement après fit) ---
+            df_export = pd.DataFrame({
+                "tweet": textes_seuls,
+                "label_reel": labels_reels,
+                "cluster_id": algo.get_labels()  # Récupère les labels générés
+            })
+            st.session_state['clustering_result_df'] = df_export
+
+        st.success("Clustering terminé !")
 
     # --- Affichage des résultats ---
     if st.session_state.get('clustering_trained'):
@@ -82,28 +97,41 @@ def render(manager):
 
         # B. Évaluation
         st.subheader("Évaluation")
+        labels_predits = st.session_state.get('clustering_labels')
+
         if col_label_idx is None:
             st.warning("Impossible d'évaluer : pas de colonne Label réelle sélectionnée.")
         else:
-            labels_predits = st.session_state.get('clustering_labels')
-
             # ARI
             ari = adjusted_rand_score(labels_reels, labels_predits)
 
             # Matrice de Confusion (via Pandas Crosstab)
             df_cm = pd.crosstab(
                 pd.Series(labels_reels, name="Label Réel"),
-                pd.Series(labels_predits, name="Cluster Prédiction")
+                pd.Series(labels_predits, name="Cluster ID")
             )
 
             col_met1, col_met2 = st.columns([1, 2])
             with col_met1:
                 st.metric("Adjusted Rand Index (ARI)", f"{ari:.4f}")
             with col_met2:
-                st.write("**Matrice de Confusion**")
+                st.write("**Matrice de Confusion (Label vs Cluster)**")
                 st.dataframe(df_cm, use_container_width=True)
 
-        # C. Test Interactif
+        # C. Zone de Téléchargement
+        if 'clustering_result_df' in st.session_state:
+            st.divider()
+            st.markdown("### 📥 Télécharger les résultats")
+            csv = st.session_state['clustering_result_df'].to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="⬇️ Télécharger le CSV (Clusters)",
+                data=csv,
+                file_name="resultats_clustering.csv",
+                mime="text/csv",
+                key="download_clustering_btn"
+            )
+
+        # D. Test Interactif
         st.divider()
         st.subheader("Test Manuel")
         user_input = st.text_input("Tapez un tweet pour voir à quel cluster il appartiendrait :")
