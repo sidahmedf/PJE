@@ -3,7 +3,7 @@ import math
 from collections import defaultdict
 import os
 
-# Codes standards
+# Codes standards pour l'affichage
 CLASS_LABELS = {
     0: "negatif",
     2: "neutre",
@@ -13,135 +13,188 @@ CLASS_LABELS = {
 
 class NaiveBayesClassifier:
     """
-    Adaptation Orientée Objet de ton script fonctionnel.
-    S'intègre parfaitement dans le wrapper du projet.
+    Classificateur Naive Bayes Multinomial complet pour le TP.
+    Supporte :
+    - Lissage de Laplace (smoothing)
+    - Mode Binaire (Présence) vs Fréquence
+    - N-grammes (Unigrammes, Bigrammes, ou les deux)
     """
 
-    def __init__(self, smoothing=1.0):
+    def __init__(self, smoothing=1.0, use_binary=False, n_gram=1):
+        """
+        :param smoothing: Paramètre de lissage (ex: 1.0)
+        :param use_binary: Si True, compte la présence (0/1). Si False, la fréquence.
+        :param n_gram: 1=Unigrammes, 2=Bigrammes, 3=Uni+Bigrammes
+        """
         self.smoothing = smoothing
-        self.prior = {}
-        self.cond_prob = {}
-        self.vocab = set()
-        self.classes = set()
+        self.use_binary = use_binary
+        self.n_gram = n_gram
 
-    def _tokenize(self, text):
-        """Tokenisation simple : minuscule + split"""
+        self.prior = {}  # Probabilité de chaque classe P(c)
+        self.cond_prob = {}  # Probabilité conditionnelle P(mot | classe)
+        self.vocab = set()  # Vocabulaire complet
+        self.classes = set()  # Ensemble des classes (0, 2, 4)
+
+    def _get_ngrams(self, text):
+        """Découpe le texte en tokens selon la configuration n_gram choisie."""
         if not isinstance(text, str):
             return []
-        return text.lower().split()
+
+        # Tokenisation simple : minuscule + découpage par espace
+        tokens = text.lower().split()
+
+        if self.n_gram == 1:
+            # Cas classique : juste les mots
+            return tokens
+
+        elif self.n_gram == 2:
+            # Bigrammes uniquement (paires de mots consécutifs)
+            if len(tokens) < 2:
+                return []
+            return [f"{a} {b}" for a, b in zip(tokens, tokens[1:])]
+
+        elif self.n_gram == 3:
+            # Unigrammes + Bigrammes (Mots simples ET paires)
+            unigrams = tokens
+            bigrams = []
+            if len(tokens) >= 2:
+                bigrams = [f"{a} {b}" for a, b in zip(tokens, tokens[1:])]
+            return unigrams + bigrams
+
+        return tokens
 
     def fit(self, data):
         """
-        Entraîne le modèle.
-
-        IMPORTANT : Pour être compatible avec ton Wrapper ET ton script perso,
-        cette méthode détecte automatiquement l'ordre (Label, Tweet) ou (Tweet, Label).
+        Entraîne le modèle sur une liste de tuples (label, tweet).
         """
         self.classes = set()
         self.vocab = set()
 
+        # 1. Nettoyage et filtrage des données
         clean_data = []
-
-        # 1. Normalisation des données & Détection du format
         if not data:
             return
 
-        # On regarde le premier élément pour savoir qui est le Label (int)
-        first_a, first_b = data[0]
-
-        is_label_first = isinstance(first_a, int) or (isinstance(first_a, float) and first_a.is_integer())
-
         for item in data:
-            if is_label_first:
-                label, tweet = int(item[0]), str(item[1])
-            else:
-                tweet, label = str(item[0]), int(item[1])
+            # Robustesse : on s'attend à un tuple (label, tweet)
+            if len(item) < 2:
+                continue
 
-            # On ne garde que les labels valides pour éviter le bug du -1
+            try:
+                # On s'assure que le label est un entier
+                label = int(item[0])
+                tweet = str(item[1])
+            except:
+                continue
+
+            # On ne garde que les labels valides du projet (0, 2, 4)
             if label in [0, 2, 4]:
                 clean_data.append((label, tweet))
                 self.classes.add(label)
 
+        if not clean_data:
+            print("⚠️ Aucune donnée d'entraînement valide.")
+            return
+
         # 2. Initialisation des compteurs
+        # word_count[classe][mot] = nombre d'occurrences
         word_count = {c: defaultdict(int) for c in self.classes}
+        # total_words[classe] = nombre total de mots (ou tokens) dans la classe
         total_words = {c: 0 for c in self.classes}
+        # class_count[classe] = nombre de tweets de cette classe
         class_count = defaultdict(int)
 
-        # 3. Comptage (Logique de ton script)
+        # 3. Comptage (Training)
         for label, tweet in clean_data:
             class_count[label] += 1
-            words = self._tokenize(tweet)
-            for w in words:
+            tokens = self._get_ngrams(tweet)
+
+            # Si mode BINAIRE (Présence), on ne compte chaque mot qu'une fois par tweet
+            if self.use_binary:
+                tokens = set(tokens)
+
+            for w in tokens:
                 self.vocab.add(w)
                 word_count[label][w] += 1
                 total_words[label] += 1
 
         # 4. Calcul des probabilités
-        N = len(self.vocab)
+        V = len(self.vocab)
         total_tweets = len(clean_data)
 
-        # P(c)
+        # P(Classe) = tweets de la classe / total tweets
         self.prior = {c: class_count[c] / total_tweets for c in self.classes}
 
-        # P(m|c) avec lissage (Ton calcul exact)
+        # P(Mot | Classe) avec lissage de Laplace
         self.cond_prob = {}
         for c in self.classes:
             self.cond_prob[c] = {}
-            # Dénominateur pré-calculé pour la boucle
-            denom = total_words[c] + (self.smoothing * N)
+            # Dénominateur commun pour cette classe : Total mots + (alpha * Taille Vocabulaire)
+            denom = total_words[c] + (self.smoothing * V)
 
             for w in self.vocab:
-                # Formule : (count + alpha) / (total + alpha*V)
-                self.cond_prob[c][w] = (word_count[c][w] + self.smoothing) / denom
+                # Numérateur : Occurrences du mot + alpha
+                count = word_count[c][w]
+                self.cond_prob[c][w] = (count + self.smoothing) / denom
 
-        print(f"✅ Modèle entraîné sur {len(clean_data)} tweets valides.")
+        print(f"✅ Modèle entraîné sur {total_tweets} tweets (Vocab: {V} tokens).")
 
     def predict_one(self, text):
-        """Classification d'un tweet (Logique de ton script)"""
+        """Prédiction pour un seul tweet."""
+        # Si le modèle n'est pas entraîné, on retourne Neutre par défaut
         if not self.prior:
-            return 2  # Neutre par défaut si pas entraîné
+            return 2
 
-        words = self._tokenize(text)
+        tokens = self._get_ngrams(text)
+
+        # --- Gestion des mots inconnus (IMPORTANT) ---
+        # On ne garde que les mots qui sont dans le vocabulaire appris
+        mots_connus = [w for w in tokens if w in self.vocab]
+
+        # Si aucun mot n'est connu, le modèle ne peut pas décider -> Neutre
+        if not mots_connus:
+            return 2
+        # ---------------------------------------------
+
         scores = {}
-
         for c in self.prior:
-            # log(Prior)
+            # Score initial = Log(P(Classe))
             score = math.log(self.prior[c])
 
-            for w in words:
-                if w in self.vocab:
-                    # + log(Probabilité Conditionnelle)
-                    score += math.log(self.cond_prob[c][w])
+            for w in mots_connus:
+                # On ajoute Log(P(Mot | Classe))
+                # On est sûr que w existe dans cond_prob car w est dans vocab
+                score += math.log(self.cond_prob[c][w])
 
             scores[c] = score
 
-        # Retourne la classe avec le score max
+        # Retourne la classe avec le score le plus élevé (max log-prob)
         return max(scores, key=scores.get)
 
     def predict_batch(self, texts):
+        """Prédiction pour une liste de tweets."""
         return [self.predict_one(t) for t in texts]
 
 
 # =========================================================
-#  PARTIE SCRIPT (Pour que tu puisses tester comme avant)
+#  FONCTIONS UTILITAIRES (Pour compatibilité si besoin)
 # =========================================================
 
 def load_training_csv_legacy(path):
-    """Ton ancien chargeur de CSV"""
+    """Ancien chargeur CSV simple (gardé pour compatibilité)"""
     data = []
     try:
         with open(path, encoding="utf-8") as f:
             reader = csv.reader(f)
-            next(reader, None)  # Sauter header
+            next(reader, None)  # Skip header
             for row in reader:
                 if row and len(row) >= 2:
                     try:
-                        # Ton format : int(row[0]) = label
                         data.append((int(row[0]), row[1]))
                     except:
                         continue
     except FileNotFoundError:
-        print("Fichier introuvable.")
+        pass
     return data
 
 
@@ -167,39 +220,13 @@ def save_predictions_legacy(path, rows, header, predictions):
             writer.writerow(new_header)
             for row, pred in zip(rows, predictions):
                 writer.writerow(row + [pred, CLASS_LABELS.get(pred, "?")])
-        print(f"Sauvegardé : {path}")
     except Exception as e:
         print(e)
 
 
 if __name__ == "__main__":
-    print("--- 🎲 Naive Bayes (Mode Standalone) ---")
-
-    # On cherche le fichier test.csv à la racine du projet
-    # (On remonte de 2 dossiers car on est dans algorithms/bayes/)
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    csv_path = os.path.join(base_dir, "test.csv")
-
-    # 1. Chargement
-    print(f"Chargement de {csv_path}...")
-    training_data = load_training_csv_legacy(csv_path)
-
-    if training_data:
-        # 2. Entraînement via la Classe
-        nb = NaiveBayesClassifier(smoothing=1.0)
-        nb.fit(training_data)  # La classe gère le format (Label, Tweet)
-
-        # 3. Test sur un exemple
-        ex = "I love this app"
-        res = nb.predict_one(ex)
-        print(f"\nTest '{ex}' -> {res} ({CLASS_LABELS.get(res)})")
-
-        # 4. Test sur le fichier complet (comme ton script)
-        rows, header = load_test_csv_legacy(csv_path)
-        if rows:
-            tweets = [r[1] for r in rows if len(r) > 1]  # On suppose tweet en col 1
-            preds = nb.predict_batch(tweets)
-
-            out = os.path.join(base_dir, "result", "bayes_legacy_result.csv")
-            os.makedirs(os.path.dirname(out), exist_ok=True)
-            save_predictions_legacy(out, rows, header, preds)
+    # Petit test si on lance le fichier directement
+    nb = NaiveBayesClassifier()
+    data = [(4, "I love this app"), (0, "This is bad"), (2, "It is okay")]
+    nb.fit(data)
+    print("Test:", nb.predict_one("I love it"))
