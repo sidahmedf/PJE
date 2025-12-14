@@ -20,6 +20,7 @@ def render(manager):
     col_text_idx = st.session_state.get('cleaned_text_col_idx', 1)
     col_label_idx = st.session_state.get('cleaned_label_col_idx', 0)
 
+    # Slider pour limiter la taille (car matrice N*N est lourde)
     n_samples = st.slider("Taille de l'échantillon (Tweets)", 50, 300, 100, help="Réduisez si c'est trop lent.")
     df_sample = df.iloc[:n_samples].copy()
 
@@ -28,6 +29,7 @@ def render(manager):
     labels_reels = []
     for i in range(len(df_sample)):
         txt = str(df_sample.iloc[i, col_text_idx])
+        # Gestion safe du label (si non supervisé, on met 0)
         lbl = int(df_sample.iloc[i, col_label_idx]) if col_label_idx is not None else 0
         data_train.append((lbl, txt))
         labels_reels.append(lbl)
@@ -46,7 +48,7 @@ def render(manager):
         else:
             st.caption("✅ **Standard**: Utilise Distance 'Mots Communs' (Jaccard).")
 
-    # --- Initialisation de l'algo (HORS du bouton pour qu'il existe tout le temps) ---
+    # --- Initialisation de l'algo (HORS du bouton pour persistance) ---
     manager.select("Clustering")
     algo = manager.get_current()
 
@@ -56,14 +58,14 @@ def render(manager):
             algo.set_params(n_clusters=k_clusters, linkage=method)
             algo.fit(data_train)
 
-            # On marque dans la session que l'algo est prêt
+            # Sauvegarde dans la session
             st.session_state['clustering_trained'] = True
             st.session_state['clustering_linkage'] = algo.get_linkage_matrix()
             st.session_state['clustering_labels'] = algo.get_labels()
 
         st.success("Terminé !")
 
-    # --- Affichage des résultats (Si l'algo a été entraîné) ---
+    # --- Affichage des résultats ---
     if st.session_state.get('clustering_trained'):
 
         # A. Dendrogramme
@@ -88,7 +90,7 @@ def render(manager):
             # ARI
             ari = adjusted_rand_score(labels_reels, labels_predits)
 
-            # Matrice de Confusion (via Pandas Crosstab pour éviter les erreurs de taille)
+            # Matrice de Confusion (via Pandas Crosstab)
             df_cm = pd.crosstab(
                 pd.Series(labels_reels, name="Label Réel"),
                 pd.Series(labels_predits, name="Cluster Prédiction")
@@ -101,15 +103,11 @@ def render(manager):
                 st.write("**Matrice de Confusion**")
                 st.dataframe(df_cm, use_container_width=True)
 
-        # C. Test Interactif (Fonctionne maintenant !)
+        # C. Test Interactif
         st.divider()
         st.subheader("Test Manuel")
         user_input = st.text_input("Tapez un tweet pour voir à quel cluster il appartiendrait :")
 
         if user_input:
-            # On utilise l'algo qui est persistant dans le 'manager'
             cluster_id = algo.predict_one(user_input)
-
-            # Petit hack : si l'algo n'est pas "fit" (cas rare de reload violent), il renvoie souvent -1 ou 0
-            # Mais ici grâce au session_state check, on est bon.
             st.info(f"Ce tweet serait classé dans le **Cluster {cluster_id}**")

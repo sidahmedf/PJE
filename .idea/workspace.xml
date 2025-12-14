@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1daa34cf-9795-46aa-9046-2fd1d2647ddd" name="Changes" comment="Ajout du dossier pour Naive Bayes, algo fonctionnel.">
-      <change afterPath="$PROJECT_DIR$/algorithms/clustering/hierarchical.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PJE_Sid_Ahmed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PJE_Sid_Ahmed.iml" afterDir="false" />
+    <list default="true" id="1daa34cf-9795-46aa-9046-2fd1d2647ddd" name="Changes" comment="Added the clustering algorithm">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/config.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithms/bayes/bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithms/bayes/bayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/wrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/tabs/bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/bayes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/tabs/clustering.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/clustering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/tabs/knn.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/tabs/knn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +58,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.bayes.executor": "Run",
     "Python.interface.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -103,7 +104,8 @@
       <option name="presentableId" value="Default" />
       <updated>1762182262111</updated>
       <workItem from="1765717183063" duration="599000" />
-      <workItem from="1765717892743" duration="1099000" />
+      <workItem from="1765717892743" duration="2063000" />
+      <workItem from="1765734728463" duration="4495000" />
     </task>
     <task id="LOCAL-00001" summary="Ajout du dossier pour Naive Bayes, algo fonctionnel.">
       <option name="closed" value="true" />
@@ -113,7 +115,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763390037556</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added the clustering algorithm">
+      <option name="closed" value="true" />
+      <created>1765719331876</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1765719331876</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,9 +131,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajout du dossier pour Naive Bayes, algo fonctionnel." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout du dossier pour Naive Bayes, algo fonctionnel." />
+    <MESSAGE value="Added the clustering algorithm" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added the clustering algorithm" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PJE$bayes.coverage" NAME="bayes Coverage Results" MODIFIED="1765737396362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/algorithms/bayes" />
     <SUITE FILE_PATH="coverage/PJE_Sid_Ahmed$main.coverage" NAME="main Coverage Results" MODIFIED="1763393347311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PJE - Naive Bayes" />
   </component>
   <component name="github-copilot-workspace">

@@ -1,7 +1,8 @@
 import streamlit as st
 import sys
 import os
-
+st.cache_data.clear()
+st.cache_resource.clear()
 # 1. Setup System Paths
 # This ensures Python can find your 'core' and 'algorithms' modules
 # regardless of how the script is executed.
