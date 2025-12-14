@@ -1,5 +1,5 @@
 # algorithm_manager.py
-from wrapper import KNNWrapper, KeywordWrapper, NaiveBayesWrapper, DummyWrapper, DummyAlgo2
+from wrapper import KNNWrapper, KeywordWrapper, NaiveBayesWrapper, DummyWrapper, DummyAlgo2, ClusteringWrapper
 
 
 class AlgorithmManager:
@@ -46,6 +46,7 @@ manager = AlgorithmManager([
     ("KNN", KNNWrapper()),
     ("Keyword", KeywordWrapper()),
     ("Naive Bayes", NaiveBayesWrapper()),
+("Clustering", ClusteringWrapper()),  # <--- AJOUTER CETTE LIGNE
     ("Dummy", DummyWrapper()),
     ("Dummy Always 4", DummyAlgo2())  # Added name string and instantiated the class
 ])

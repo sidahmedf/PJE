@@ -1,10 +1,13 @@
-# algorithms.py
+# core/wrapper.py
 from algorithms.knn.knn_classifier import KNNClassifier
 from algorithms.knn.distance import JaccardDistance
 from algorithms.knn.voting import MajorityVote
 from algorithms.keywords.annotator import KeywordAnnotator
 from algorithms.bayes.bayes import train_naive_bayes, classify
+# --- Import du Clustering ---
+from algorithms.clustering.hierarchical import ClusteringHierarchique
 import random
+
 
 # ============================================================
 # 🧱 Base Class
@@ -39,7 +42,6 @@ class BaseAlgorithm:
 
     def predict_batch(self, texts):
         return [self.predict_one(t) for t in texts]
-
 
     def describe(self):
         return {
@@ -115,11 +117,12 @@ class KeywordWrapper(BaseAlgorithm):
         (annotate_tweet + params), without modifying KeywordAnnotator.
         """
         from algorithms.keywords.annotation import annotate_tweet
-
         return annotate_tweet(tweet, self.annotator.params)
 
 
-
+# ============================================================
+# 🧩 Naive Bayes Wrapper
+# ============================================================
 class NaiveBayesWrapper(BaseAlgorithm):
     name = "Naive Bayes"
     mode = "supervised"
@@ -128,8 +131,6 @@ class NaiveBayesWrapper(BaseAlgorithm):
 
     def __init__(self, **kwargs):
         super().__init__()
-
-        # parameter schema — consistent with other wrappers
         self.param_schema = {
             "smoothing": {
                 "type": "float",
@@ -139,25 +140,16 @@ class NaiveBayesWrapper(BaseAlgorithm):
                 "step": 0.1,
             }
         }
-
-        # initialize params using schema + kwargs (consistent with KNN/Keyword)
         self.params = {k: v["default"] for k, v in self.param_schema.items()}
         self.params.update(kwargs)
 
-        # trained model parts
         self.prior = None
         self.cond_prob = None
         self.vocab = None
 
     def fit(self, data):
-        """
-        Base format is [(label, text)]
-        But function used in bayes.py expects [(text, label)].
-        So we convert format but do not modify his implementation.
-        """
         converted = [(text, label) for label, text in data]
         self.prior, self.cond_prob, self.vocab = train_naive_bayes(converted)
-
 
     def predict_one(self, text):
         if self.prior is None:
@@ -165,6 +157,9 @@ class NaiveBayesWrapper(BaseAlgorithm):
         return classify(text, self.prior, self.cond_prob, self.vocab)
 
 
+# ============================================================
+# 🧩 Dummy Wrappers
+# ============================================================
 class DummyWrapper(BaseAlgorithm):
     name = "Dummy"
     mode = "supervised"
@@ -173,7 +168,6 @@ class DummyWrapper(BaseAlgorithm):
 
     def __init__(self, possible_labels=None, **kwargs):
         super().__init__()
-        # optional param: list of labels to randomly choose from
         self.param_schema = {
             "possible_labels": {"type": "list", "default": [0, 2, 4]}
         }
@@ -182,30 +176,69 @@ class DummyWrapper(BaseAlgorithm):
         self.possible_labels = self.params["possible_labels"]
 
     def fit(self, data):
-        """Dummy fit does nothing"""
         pass
 
     def predict_one(self, text):
-        """Return a random label"""
         return random.choice(self.possible_labels)
+
 
 class DummyAlgo2(BaseAlgorithm):
     name = "Dummy Always 4"
-    mode = "supervised" # Treated as a supervised baseline
+    mode = "supervised"
     output_type = "label"
     description = "Deterministic algorithm that always predicts label 4"
 
     def __init__(self, **kwargs):
         super().__init__()
-        # No parameters are required since the output is hardcoded
         self.param_schema = {}
         self.params = {}
         self.params.update(kwargs)
 
     def fit(self, data):
-        """No training required for a static prediction."""
         pass
 
     def predict_one(self, text):
-        """Always return 4, regardless of input text."""
         return 4
+
+
+# ============================================================
+# 🧶 Clustering Wrapper (AJOUTÉ)
+# ============================================================
+class ClusteringWrapper(BaseAlgorithm):
+    name = "Hierarchical Clustering"
+    mode = "unsupervised"
+    output_type = "cluster_id"
+    description = "Pipelines cours: Jaccard (Avg/Comp) & Ward (TF-IDF)"
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.param_schema = {
+            "n_clusters": {"type": "int", "min": 2, "max": 10, "default": 3},
+            "linkage": {"type": "select", "options": ["ward", "average", "complete"], "default": "ward"}
+        }
+        self.params = {k: v["default"] for k, v in self.param_schema.items()}
+        self.params.update(kwargs)
+        self.algo = None
+
+    def fit(self, data):
+        # data est une liste de tuples (label, tweet)
+        # On extrait juste les textes pour le clustering
+        textes = [t for _, t in data]
+
+        self.algo = ClusteringHierarchique(
+            n_clusters=self.params["n_clusters"],
+            methode_lien=self.params["linkage"]
+        )
+        self.algo.entrainer(textes)
+
+    def predict_one(self, text):
+        if self.algo:
+            return self.algo.predire_un(text)
+        return -1
+
+    # Méthodes spécifiques pour l'interface graphique
+    def get_linkage_matrix(self):
+        return self.algo.recuperer_donnees_lien() if self.algo else None
+
+    def get_labels(self):
+        return self.algo.labels_ if self.algo else []
